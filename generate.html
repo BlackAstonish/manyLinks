@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate Link</title>
+
+<style>
+  body {
+    background: #0b0b0b;
+    color: white;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .box {
+    max-width: 360px;
+    width: 100%;
+    padding: 24px;
+    text-align: center;
+  }
+  input, select, button {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+  }
+  input, select {
+    background: #161616;
+    color: white;
+  }
+  button {
+    background: #222;
+    color: white;
+    cursor: pointer;
+  }
+  .output {
+    margin-top: 12px;
+    word-break: break-all;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h3>Generate Expiring Link</h3>
+
+  <input type="password" id="key" placeholder="Generator key" />
+
+  <select id="duration">
+    <option value="15m">15 minutes</option>
+    <option value="30m">30 minutes</option>
+    <option value="1h">1 hour</option>
+    <option value="5h">5 hours</option>
+    <option value="12h">12 hours</option>
+    <option value="24h" selected>24 hours</option>
+    <option value="48h">48 hours</option>
+    <option value="72h">72 hours</option>
+    <option value="5d">5 days</option>
+  </select>
+
+  <button onclick="generate()">Generate Link</button>
+
+  <div class="output" id="output"></div>
+</div>
+
+<script>
+async function generate() {
+  const key = document.getElementById("key").value;
+  const duration = document.getElementById("duration").value;
+
+  const res = await fetch("/.netlify/functions/generate", {
+    method: "POST",
+    body: JSON.stringify({ key, duration })
+  });
+
+  if (!res.ok) {
+    document.getElementById("output").textContent = "Access denied";
+    return;
+  }
+
+  const data = await res.json();
+  const url = `${location.origin}/?t=${data.token}`;
+
+  document.getElementById("output").textContent = url;
+}
+</script>
+</body>
+</html>
