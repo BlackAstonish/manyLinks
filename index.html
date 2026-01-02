@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Links</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #0b0b0b;
+    color: white;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .box {
+    max-width: 360px;
+    width: 100%;
+    padding: 24px;
+    text-align: center;
+  }
+  a {
+    display: block;
+    background: #161616;
+    color: white;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  .hidden { display: none; }
+</style>
+</head>
+
+<body>
+<div class="box hidden" id="links">
+  <a href="https://example.com">Link One</a>
+  <a href="https://example.com">Link Two</a>
+  <a href="https://example.com">Link Three</a>
+</div>
+
+<div class="box" id="denied">Access expired or invalid.</div>
+
+<script>
+(async () => {
+  const token = new URLSearchParams(location.search).get("t");
+  if (!token) return;
+
+  const res = await fetch(`/.netlify/functions/verify?t=${token}`);
+  if (res.ok) {
+    document.getElementById("denied").classList.add("hidden");
+    document.getElementById("links").classList.remove("hidden");
+  }
+})();
+</script>
+</body>
+</html>
