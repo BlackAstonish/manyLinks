@@ -1,5 +1,7 @@
-manyLinks/
-├─ index.html
+/
+├─ index.html          (link viewer – already done)
+├─ generate.html       (NEW – link generator UI)
 └─ netlify/
    └─ functions/
-      └─ verify.js
+      ├─ verify.js     (already done)
+      └─ generate.js   (NEW – secure token creation)
