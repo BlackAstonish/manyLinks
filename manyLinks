@@ -1,0 +1,5 @@
+manyLinks/
+├─ index.html
+└─ netlify/
+   └─ functions/
+      └─ verify.js
